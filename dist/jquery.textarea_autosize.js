@@ -35,9 +35,15 @@
 
       // keyup is required for IE to properly reset height when deleting text
       this.$element.on('input keyup', function(event) {
-        $(this)
-          .height('auto')
-          .height(this.scrollHeight - diff);
+        $this = $(this);
+        $this.height('auto');
+        var new_height = (this.scrollHeight - diff);
+        var last_height = $this.data('textareaAutoSize_last_height') || new_height;
+        $this.height(new_height);
+        if(last_height != new_height){
+          $this.trigger('textareaAutoSizeChange', new_height);
+        }
+        $this.data('textareaAutoSize_last_height',new_height);
       });
     }
   };
